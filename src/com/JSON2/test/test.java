@@ -5,6 +5,7 @@ import org.junit.Test;
 import com.JSON2.json.JSON;
 import com.JSON2.json.JSONArray;
 import com.JSON2.json.JSONObject;
+import com.JSON2.json.JSONTokener;
 import com.JSON2.util.TypeToolsGenerics;
 import com.JSON2.util.UnicodeUtil;
 /*
@@ -18,6 +19,9 @@ import com.JSON2.util.UnicodeUtil;
 */
 public class test {
 	public static void main(String[] args){
+		
+	}
+	public void test(){
 		String str = "[{\"index\":34, \"name\":[{\"index\":40, \"name\":\"yy\"}]}]" ;
 		JSON p = new JSON() ;
 		Object obj = p.parseObject(str) ;
@@ -85,6 +89,5 @@ public class test {
 		//System.out.println(UnicodeUtil.getInstance().parseC("\u5a01")) ;
 		char letter = (char) Integer.parseInt("\u5a01", 16) ;
 		System.out.println(letter) ;
-		
 	}
 }

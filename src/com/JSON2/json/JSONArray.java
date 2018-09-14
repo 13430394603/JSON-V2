@@ -2,6 +2,7 @@ package com.JSON2.json;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.function.Consumer;
 /**
  * 
  * @ClassName: JSONArray 
@@ -62,5 +63,12 @@ public class JSONArray{
 	
 	public String toString(){
 		return new JSON().parseString(this) ;
+	}
+	
+	public void iterator(){
+		containerlists.iterator();
+	} 
+	public void forEach(Consumer<? super JSONObject> action){
+		containerlists.forEach(action);
 	}
 }
