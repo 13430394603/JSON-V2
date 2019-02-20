@@ -16,7 +16,7 @@ import java.util.Set;
  *
  */
 public class JSONObject{
-	private Map<String, Object> map = new HashMap<String, Object>() ;
+	private Map<String, Object> map = new HashMap<String, Object>();
 	/**
 	 * 
 	 * 此方法会进行字符冲突处理
@@ -28,10 +28,14 @@ public class JSONObject{
 	 */
 	public void put(String key, Object value) {
 		if(value == null)
-			value = "" ;
+			value = "";
+		/*
+		january 28, 2019
+		已经在JSON中进行检查
 		else if(value instanceof String)
-			value = JSONAmbiguitychar.doCheckAndReplace((String) value) ;
-		map.put(key, value) ;
+			value = JSONAmbiguitychar.doCheckAndReplace((String) value);
+		*/
+		map.put(key, value);
 	}
 	/**
 	 * 
@@ -44,13 +48,16 @@ public class JSONObject{
 	 * void
 	 *
 	 */
+	/*
+	january 28, 2019
 	public void putRedu(String key, Object value) {
 		if(value == null)
-			value = "" ;
+			value = "";
 		else if(value instanceof String)
-			value = JSONAmbiguitychar.doReducte((String) value) ;
-		map.put(key, value) ;
+			value = JSONAmbiguitychar.doReducte((String) value);
+		map.put(key, value);
 	}
+	*/
 	/**
 	 * 
 	 * 未进行字符冲突还原
@@ -62,11 +69,11 @@ public class JSONObject{
 	 *
 	 */
 	public Object get(String key){
-		return map.get(key) ;
+		return map.get(key);
 	}
 	/**
 	 * 
-	 * 进行字符冲突还原
+	 * 进行字符冲突还原 废弃
 	 * @see
 	 * 此对象为new出来，而不是通过parseObject方法而来
 	 * @param key
@@ -74,12 +81,15 @@ public class JSONObject{
 	 * Object
 	 *
 	 */
+	/*
+	january 28, 2019
 	public Object getRedu(String key){
-		Object value = get(key) ;
+		Object value = get(key);
 		if(value instanceof String)
-			value = JSONAmbiguitychar.doReducte((String) value) ;
-		return value ;
+			value = JSONAmbiguitychar.doReducte((String) value);
+		return value;
 	}
+	*/
 	/**
 	 * 
 	 * 获取entrySet
@@ -89,7 +99,7 @@ public class JSONObject{
 	 *
 	 */
 	public Set<Entry<String, Object>> getSet(){
-		return map.entrySet() ;
+		return map.entrySet();
 	}
 	/**
 	 * 
@@ -100,9 +110,9 @@ public class JSONObject{
 	 *
 	 */
 	public Set<String> getKeySet(){
-		return map.keySet() ;
+		return map.keySet();
 	}
 	public String toString(){
-		return new JSON().parseString(this) ;
+		return new JSON().parseString(this);
 	}
 }

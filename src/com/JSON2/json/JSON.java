@@ -2,6 +2,7 @@ package com.JSON2.json;
 
 import com.JSON2.util.TypeToolsGenerics;
 import com.JSON2.util.UnicodeUtil;
+import com.JSON2.util.JSONAmbiguitychar;
 /**
  * 
  * <b>JSON数据的处理<b>
@@ -52,14 +53,24 @@ public class JSON{
 				str.append(_toStringObject((JSONObject) value));
 				continue;
 			}
+			/*
+			january 28,2019
+			废弃原因：更简便的写法
 			if(TypeToolsGenerics.getType(value).equals("int") 
 					|| TypeToolsGenerics.getType(value).equals("boolean")
 					|| TypeToolsGenerics.getType(value).equals("double")
 					|| TypeToolsGenerics.getType(value).equals("long")
 					|| TypeToolsGenerics.getType(value).equals("float"))
-				str.append(value);
+				str.append(value);   
 			else
-				str.append("\"" + UnicodeUtil.parseU((String) value) + "\"");		
+				//增加非法符的检测
+				str.append("\"" + UnicodeUtil.parseU((String) value) + "\""); 
+			*/
+			//检查非法符 
+			//之前是在put方法中进行检查，放在此处比较完善，避免不经过put而漏检查
+			str	.append(value instanceof String 
+					? "\"" + UnicodeUtil.parseU(JSONAmbiguitychar.doCheckAndReplace((String) value) + "\"") 
+					: value);
 		}
 		return "{" + str.toString() + "}";
 	}
@@ -93,7 +104,7 @@ public class JSON{
 			return _dealObject(str.substring(1, str.length()-1));
 		}else{
 			//
-			System.out.println("数据有误"); 
+			System.out.println("数据有误，str = " + str); 
 		}
 		return null;
 	}
@@ -186,10 +197,21 @@ public class JSON{
 				selectIndex = endIndex + 2;
 			}else{
 				int tempIndex_;
+				int tempEndIndex_ = str.indexOf("}", selectIndex); //逗号符在括号之前才有效 january 26,2019
 				tempIndex_ = str.indexOf(",", selectIndex);
-				tempValue = str.substring(selectIndex, (tempIndex_ == -1 ? str.length() : tempIndex_));
+				tempValue = str.substring(selectIndex, 
+					(tempIndex_ == -1 
+						? str.length() 
+						: (tempEndIndex_ == -1 || tempIndex_ < tempEndIndex_ 
+							? tempIndex_ 
+							: tempIndex_-1
+						)
+					)
+				);
 				if(_isString((String) tempValue)){
-					tempValue = _rep((String) tempValue).trim();
+					//tempValue = _rep((String) tempValue).trim(); january 28, 2019
+					//原版本是通过JSONObject的putRedu去完成解析，现在直接在此处解析
+					tempValue = JSONAmbiguitychar.doReducte(_rep((String) tempValue).trim());
 				}else if(tempValue.equals("false") || tempValue.equals("true")){
 					tempValue = Boolean.parseBoolean((String) tempValue);
 				}
@@ -200,7 +222,9 @@ public class JSON{
 				}
 				selectIndex = tempIndex_ + 1; 
 			}
-			object.putRedu(_rep(tempKey.trim()), tempValue);
+			//object.putRedu(_rep(tempKey.trim()), tempValue); january 28, 2019
+			//原版本是通过JSONObject的putRedu去完成解析
+			object.put(_rep(tempKey.trim()), tempValue);
 		}
 		
 		return object;
@@ -211,7 +235,7 @@ public class JSON{
 	}
 	//将上引号去除
 	private String _rep(String str){
-		return str.replaceAll("\"", "");
+		return UnicodeUtil.parseC(str.replaceAll("\"", ""));
 	}	
 	//判断对象的属性值是否为对象
 	private Character _isObject(int startIndex, String str){

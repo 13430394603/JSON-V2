@@ -13,7 +13,7 @@ import java.util.function.Consumer;
  */
 public class JSONArray{
 	//JSONObject对象集
-	private List<JSONObject> containerlists = new ArrayList<JSONObject>() ;
+	private List<JSONObject> containerlists = new ArrayList<JSONObject>();
 	/**
 	 * 
 	 * @Title: put 
@@ -23,7 +23,7 @@ public class JSONArray{
 	 *
 	 */
 	public void add(JSONObject json){
-		containerlists.add(json) ;
+		containerlists.add(json);
 	}
 	
 	/**
@@ -35,7 +35,7 @@ public class JSONArray{
 	 *
 	 */
 	public int length(){
-		return containerlists.size() ;
+		return containerlists.size();
 	}
 	/**
 	 * 
@@ -47,7 +47,7 @@ public class JSONArray{
 	 *
 	 */
 	public JSONObject getJSONObject(int index) {
-		return containerlists.get(index) ;
+		return containerlists.get(index);
 	}
 	/**
 	 * 
@@ -58,11 +58,11 @@ public class JSONArray{
 	 *
 	 */
 	public List<JSONObject> get(){
-		return containerlists ;
+		return containerlists;
 	}
 	
 	public String toString(){
-		return new JSON().parseString(this) ;
+		return new JSON().parseString(this);
 	}
 	
 	public void iterator(){
